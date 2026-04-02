@@ -1,4 +1,16 @@
 
+provider "aws" {
+  region = "ap-southeast-1"
+}
+
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "terraform-up-and-running-state"
+  # Prevent accidental deletion of this S3 bucket
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 # Explicitly block all public access to the S3 bucket
 resource "aws_s3_bucket_public_access_block" "public_access" {
   bucket                  = aws_s3_bucket.terraform_state.id
